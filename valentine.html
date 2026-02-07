@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Beant ❤️</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffd1dc, #ffe4e1);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.cat {
+  width: 170px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.glow {
+  color: #ff4d9d;
+  text-shadow: 0 0 6px #ff4d9d, 0 0 12px #ff85c2;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+#countdown {
+  font-weight: 600;
+  color: #ff4d6d;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 12px 28px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 8px;
+}
+
+#yes { background: #ff4d6d; color: white; }
+#no {
+  background: #ddd;
+  position: fixed;
+  transition: 0.08s;
+}
+
+#popup {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #ff4d6d;
+  min-height: 30px;
+}
+
+.hidden { display: none; }
+
+.music-btn {
+  font-size: 14px;
+  background: #ffe4ec;
+  color: #ff4d6d;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<div class="box">
+
+  <button class="music-btn" onclick="playMusic()">🎵 Play Music</button>
+
+  <img id="catGif" class="cat"
+    src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
+
+  <div id="countdown"></div>
+
+  <h1 id="question" class="glow">
+    Hey Beant 😄❤️<br>
+    Will you be my Valentine?
+  </h1>
+
+  <button id="yes">Yes 💖</button>
+  <button id="no">No 😜</button>
+
+  <div id="popup"></div>
+
+</div>
+
+<script>
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const question = document.getElementById("question");
+const catGif = document.getElementById("catGif");
+const popup = document.getElementById("popup");
+const music = document.getElementById("bgMusic");
+
+const messages = [
+  "maan jao na 🥹",
+  "itna bhaav kyun 😄",
+  "promise rulaunga nahi 🥺",
+  "sirf thoda pareshaan 😜",
+  "bas ek YES 👉👈"
+];
+
+let msgIndex = 0;
+
+// MUSIC
+function playMusic() {
+  music.play();
+}
+
+// COUNTDOWN
+const targetDate = new Date("Feb 14, 2026 00:00:00").getTime();
+setInterval(() => {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  if (diff <= 0) {
+    document.getElementById("countdown").innerText = "💖 It's Valentine’s Day 💖";
+    return;
+  }
+
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("countdown").innerText =
+    `⏳ ${d}d ${h}h ${m}m ${s}s left`;
+}, 1000);
+
+// YES CLICK
+yesBtn.onclick = () => {
+  question.innerHTML = "YAYYY 😍💖<br>You’re my Valentine!";
+  catGif.src = "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif";
+  noBtn.classList.add("hidden");
+  popup.innerText = "";
+  playMusic();
+
+  confetti({ particleCount: 300, spread: 140 });
+};
+
+// NO RUNS
+function moveNo() {
+  noBtn.style.left = Math.random() * (window.innerWidth - 80) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 80) + "px";
+  popup.innerText = messages[msgIndex];
+  msgIndex = (msgIndex + 1) % messages.length;
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("click", moveNo);
+</script>
+
+</body>
+</html>
